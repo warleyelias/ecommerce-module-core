@@ -291,7 +291,7 @@ class APIService
         $endpoint = $this->getAPIBaseEndpoint();
 
         $subscription->addMetaData(
-            json_decode(json_encode($this->getRequestMetaData()), true)
+            json_decode(json_encode($this->getRequestMetaData($subscription)), true)
         );
 
         $subscriptionRequest = $subscription->convertToSDKRequest();
