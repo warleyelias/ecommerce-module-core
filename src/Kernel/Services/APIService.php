@@ -171,7 +171,11 @@ class APIService
         $metadata->moduleVersion = $versionService->getModuleVersion();
         $metadata->coreVersion = $versionService->getCoreVersion();
         $metadata->platformVersion = $versionService->getPlatformVersion();
-        if($this->hasCreditCardInPayments($orderRequest->payments) && !empty(MPSetup::getInstallmentType())){
+        if (
+            property_exists($orderRequest, "payments") &&
+            $this->hasCreditCardInPayments($orderRequest->payments) &&
+            !empty(MPSetup::getInstallmentType())
+        ) {
             $metadata->interestType = MPSetup::getInstallmentType();
         }
         return $metadata;
@@ -180,7 +184,7 @@ class APIService
     private function hasCreditCardInPayments($payments)
     {
         foreach ($payments as $payment) {
-            if($payment->paymentMethod === TransactionType::CREDIT_CARD) {
+            if ($payment->paymentMethod === TransactionType::CREDIT_CARD) {
                 return true;
             }
         }

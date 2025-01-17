@@ -87,6 +87,11 @@ final class SubscriptionHandler extends AbstractResponseHandler
         return $cantCreateReason;
     }
 
+    private function handleSubscriptionStatusProcessing(Subscription $subscription)
+    {
+        return $this->handleSubscriptionStatusPaid($subscription);
+    }
+
     private function handleSubscriptionStatusPending(Subscription $subscription)
     {
         $order = $this->order;
