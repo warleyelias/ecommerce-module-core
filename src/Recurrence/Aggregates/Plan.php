@@ -474,7 +474,7 @@ final class Plan extends AbstractEntity implements RecurrenceEntityInterface, Pr
         if ($this->getIntervalType() == IntervalValueObject::INTERVAL_TYPE_MONTH) {
             return range(1, $this->getIntervalCount());
         }
-        return range(1, 18);
+        return range(1, self::MAX_INSTALLMENTS_NUMBER);
     }
 
     public function getCurrency()
