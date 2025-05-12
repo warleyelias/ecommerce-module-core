@@ -2,6 +2,7 @@
 
 namespace Pagarme\Core\Recurrence\Aggregates;
 
+use Pagarme\Core\Recurrence\Services\RecurrenceService;
 use PagarmeCoreApiLib\Models\CreatePlanRequest;
 use PagarmeCoreApiLib\Models\UpdatePlanRequest;
 use Pagarme\Core\Kernel\Abstractions\AbstractEntity;
@@ -14,7 +15,6 @@ final class Plan extends AbstractEntity implements RecurrenceEntityInterface, Pr
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
     const RECURRENCE_TYPE = "plan";
-    const MAX_INSTALLMENTS_NUMBER = 12;
 
     protected $id = null;
     private $interval;
@@ -475,7 +475,7 @@ final class Plan extends AbstractEntity implements RecurrenceEntityInterface, Pr
         if ($this->getIntervalType() == IntervalValueObject::INTERVAL_TYPE_MONTH) {
             return range(1, $this->getIntervalCount());
         }
-        return range(1, self::MAX_INSTALLMENTS_NUMBER);
+        return range(1, RecurrenceService::MAX_INSTALLMENTS_NUMBER);
     }
 
     public function getCurrency()
