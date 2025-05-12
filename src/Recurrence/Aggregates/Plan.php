@@ -14,6 +14,7 @@ final class Plan extends AbstractEntity implements RecurrenceEntityInterface, Pr
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
     const RECURRENCE_TYPE = "plan";
+    const MAX_INSTALLMENTS_NUMBER = 12;
 
     protected $id = null;
     private $interval;
