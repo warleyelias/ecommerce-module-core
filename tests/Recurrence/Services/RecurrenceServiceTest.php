@@ -56,7 +56,7 @@ class RecurrenceServiceTest extends AbstractSetupTest
 
         $maxInstallment = $this->service->getMaxInstallmentByRecurrenceInterval($interval);
 
-        $this->assertEquals(18, $maxInstallment);
+        $this->assertEquals(RecurrenceService::MAX_INSTALLMENTS_NUMBER, $maxInstallment);
     }
 
     private function insertProductSubscription()
