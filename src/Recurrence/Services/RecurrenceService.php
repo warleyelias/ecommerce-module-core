@@ -69,6 +69,18 @@ class RecurrenceService
     /**
      * @todo Remove when be implemented code on mark1
      */
+    public function getSubscriptionItemByProductId($subscriptionItemId)
+    {
+        $subscriptionItemRepository = new SubscriptionItemRepository();
+        return $subscriptionItemRepository->findByPagarmeId(
+            new SubscriptionItemId($subscriptionItemId)
+        );
+
+    }
+
+    /**
+     * @todo Remove when be implemented code on mark1
+     */
     public function getProductByName($productName, $recurrence)
     {
         foreach ($recurrence->getItems() as $item) {
@@ -99,18 +111,6 @@ class RecurrenceService
         $product->loadByEntityId($id);
 
         return $product;
-    }
-
-    /**
-     * @todo Remove when be implemented code on mark1
-     */
-    public function getSubscriptionItemByProductId($subscriptionItemId)
-    {
-        $subscriptionItemRepository = new SubscriptionItemRepository();
-        return $subscriptionItemRepository->findByPagarmeId(
-            new SubscriptionItemId($subscriptionItemId)
-        );
-
     }
 
     public function getGreatestCyclesFromItems($items)
