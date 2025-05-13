@@ -4,7 +4,7 @@ namespace Pagarme\Core\Test\Mock\Concrete;
 
 use Pagarme\Core\Kernel\Abstractions\AbstractModuleCoreSetup;
 use Pagarme\Core\Kernel\Factories\ConfigurationFactory;
-use Pagarme\Core\Recurrence\Services\RecurrenceService;
+use Pagarme\Core\Kernel\Services\InstallmentService;
 use PDO;
 use PDOException;
 
@@ -150,7 +150,7 @@ class PlatformCoreSetup extends AbstractModuleCoreSetup
                     'brand' => 'noBrand',
                     'incrementalInterest' => 1,
                     'initialInterest' => 10,
-                    'maxInstallment' => RecurrenceService::MAX_INSTALLMENTS_NUMBER,
+                    'maxInstallment' => InstallmentService::MAX_PSP_INSTALLMENTS_NUMBER,
                     'maxInstallmentWithoutInterest' => 6,
                     'minValue' => 1000,
                 ],
@@ -159,7 +159,7 @@ class PlatformCoreSetup extends AbstractModuleCoreSetup
                     'brand' => 'Visa',
                     'incrementalInterest' => 1,
                     'initialInterest' => 10,
-                    'maxInstallment' => RecurrenceService::MAX_INSTALLMENTS_NUMBER,
+                    'maxInstallment' => InstallmentService::MAX_PSP_INSTALLMENTS_NUMBER,
                     'maxInstallmentWithoutInterest' => 6,
                     'minValue' => 1000,
                 ],
@@ -168,7 +168,7 @@ class PlatformCoreSetup extends AbstractModuleCoreSetup
                     'brand' => 'Mastercard',
                     'incrementalInterest' => 1,
                     'initialInterest' => 10,
-                    'maxInstallment' => RecurrenceService::MAX_INSTALLMENTS_NUMBER,
+                    'maxInstallment' => InstallmentService::MAX_PSP_INSTALLMENTS_NUMBER,
                     'maxInstallmentWithoutInterest' => 6,
                     'minValue' => 1000,
                 ]

@@ -2,6 +2,7 @@
 
 namespace Pagarme\Core\Test\Recurrence\Services;
 
+use Pagarme\Core\Kernel\Services\InstallmentService;
 use Pagarme\Core\Kernel\Services\LogService;
 use Pagarme\Core\Recurrence\Factories\ProductSubscriptionFactory;
 use Pagarme\Core\Recurrence\Repositories\ProductSubscriptionRepository;
@@ -56,7 +57,7 @@ class RecurrenceServiceTest extends AbstractSetupTest
 
         $maxInstallment = $this->service->getMaxInstallmentByRecurrenceInterval($interval);
 
-        $this->assertEquals(RecurrenceService::MAX_INSTALLMENTS_NUMBER, $maxInstallment);
+        $this->assertEquals(InstallmentService::MAX_PSP_INSTALLMENTS_NUMBER, $maxInstallment);
     }
 
     private function insertProductSubscription()

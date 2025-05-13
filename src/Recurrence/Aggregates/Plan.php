@@ -2,6 +2,7 @@
 
 namespace Pagarme\Core\Recurrence\Aggregates;
 
+use Pagarme\Core\Kernel\Services\InstallmentService;
 use Pagarme\Core\Recurrence\Services\RecurrenceService;
 use PagarmeCoreApiLib\Models\CreatePlanRequest;
 use PagarmeCoreApiLib\Models\UpdatePlanRequest;
@@ -475,7 +476,7 @@ final class Plan extends AbstractEntity implements RecurrenceEntityInterface, Pr
         if ($this->getIntervalType() == IntervalValueObject::INTERVAL_TYPE_MONTH) {
             return range(1, $this->getIntervalCount());
         }
-        return range(1, RecurrenceService::MAX_INSTALLMENTS_NUMBER);
+        return range(1, InstallmentService::MAX_PSP_INSTALLMENTS_NUMBER);
     }
 
     public function getCurrency()
