@@ -3,6 +3,7 @@
 namespace Pagarme\Core\Kernel\Services;
 
 use Pagarme\Core\Kernel\Abstractions\AbstractDataService;
+use Pagarme\Core\Kernel\Aggregates\Charge;
 use Pagarme\Core\Kernel\Aggregates\Order;
 use Pagarme\Core\Kernel\Abstractions\AbstractModuleCoreSetup as MPSetup;
 use Pagarme\Core\Kernel\Exceptions\InvalidParamException;
@@ -271,17 +272,14 @@ final class OrderService
                     $paymentOrder
                 );
 
-                $charges = $this->createChargesFromResponse($response);
+                $charges = $this->getChargesFromResponse($response);
                 $errorMessages = $this->cancelChargesAtPagarme($charges);
 
                 $this->addChargeMessagesToLog($platformOrder, $paymentOrder, $errorMessages);
 
                 $this->persistListChargeFailed($response);
 
-                $message = $i18n->getDashboard(
-                    "Can't create payment. " .
-                    "Please review the information and try again."
-                );
+                $message = $this->handleResponseMessage($response);
                 throw new \Exception($message, 400);
             }
 
@@ -312,10 +310,7 @@ final class OrderService
                     "Can't create order. - Force Create Order: {$forceCreateOrder} | Order or charge status failed",
                     $paymentOrder
                 );
-                $message = $i18n->getDashboard(
-                    "Can't create payment. " .
-                    "Please review the information and try again."
-                );
+                $message = $this->handleResponseMessage($response);
                 throw new \Exception($message, 400);
             }
 
@@ -450,7 +445,7 @@ final class OrderService
             return;
         }
 
-        $charges = $this->createChargesFromResponse($response);
+        $charges = $this->getChargesFromResponse($response);
         $chargeService = new ChargeService();
 
         foreach ($charges as $charge) {
@@ -458,7 +453,12 @@ final class OrderService
         }
     }
 
-    private function createChargesFromResponse($response)
+    /**
+     * @param $response
+     * @return array
+     * @throws InvalidParamException
+     */
+    private function getChargesFromResponse($response)
     {
         if (empty($response['charges'])) {
             return [];
@@ -495,5 +495,42 @@ final class OrderService
     public function getOrderByPlatformId($platformOrderID)
     {
         return $this->orderRepository->findByPlatformId($platformOrderID);
+    }
+
+    /**
+     * @param $response
+     * @return string
+     * @throws InvalidParamException
+     */
+    private function handleResponseMessage($response)
+    {
+        $i18n = new LocalizationService();
+        $charges = $this->getChargesFromResponse($response);
+        $defaultErrorMessage = $i18n->getDashboard(
+            "Can't create payment. Please review the information and try again."
+        );
+
+        if (empty($charges)) {
+            return $defaultErrorMessage;
+        }
+
+        $allErrorMessages = [];
+
+        /**
+         * @var Charge $charge
+         */
+        foreach ($charges as $charge) {
+            $allErrorMessages = array_merge($allErrorMessages, $charge->getGatewayErrorMessages());
+        }
+
+        foreach ($allErrorMessages as $errorMessage) {
+            if ($errorMessage->message === 'invalid_parameter | installments | Número de parcelas inválido') {
+                return $i18n->getDashboard(
+                    'Issuing bank does not accept the selected installment. Please select a smaller installment option.'
+                );
+            }
+        }
+
+        return $defaultErrorMessage;
     }
 }
