@@ -116,7 +116,7 @@ final class InstallmentService
      */
     public static function isInstallmentErrorMessage($message)
     {
-        return strpos($message, self::INSTALLMENT_OVER_ISSUER_LIMIT_ERROR_MESSAGE_PTBR) >= 0;
+        return strpos($message, self::INSTALLMENT_OVER_ISSUER_LIMIT_ERROR_MESSAGE_PTBR) !== false;
     }
 
     public function getLabelFor(Installment $installment)
