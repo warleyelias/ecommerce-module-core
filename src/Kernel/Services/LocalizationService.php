@@ -30,10 +30,10 @@ final class LocalizationService
     private function translateDashboard($string)
     {
         $locale = AbstractModuleCoreSetup::getDashboardLanguage();
+
         /**
-         *
- * @var AbstractI18NTable $i18nTable
-*/
+         * @var AbstractI18NTable $i18nTable
+         **/
         $i18nTable = $this->getI18NTableOrDefaultFor($locale);
 
         if ($i18nTable === null) {
