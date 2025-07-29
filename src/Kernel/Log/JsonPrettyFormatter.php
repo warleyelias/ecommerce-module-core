@@ -10,7 +10,8 @@ class JsonPrettyFormatter extends JsonFormatter
     public function format(array $record): string
     {
         $logObjectFactory = new LogObjectFactory();
-        $logObject = $logObjectFactory->createFromArray($record['context']);
+        $normalized = $this->normalizeRecord($record);
+        $logObject = $logObjectFactory->createFromArray($normalized['context']);
 
         $msg =
             "[{$record['datetime']->format('Y-m-d h:i:s')}] " .
