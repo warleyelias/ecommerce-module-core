@@ -4,10 +4,11 @@ namespace Pagarme\Core\Kernel\Log;
 
 use Monolog\Formatter\JsonFormatter;
 use Pagarme\Core\Kernel\Factories\LogObjectFactory;
+use Monolog\LogRecord;
 
 class JsonPrettyFormatter extends JsonFormatter
 {
-    public function format(array $record): string
+    public function format(LogRecord $record): string
     {
         $logObjectFactory = new LogObjectFactory();
         $normalized = $this->normalizeRecord($record);
